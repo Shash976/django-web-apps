@@ -1,0 +1,69 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+    {% if closed %}
+        <h2 id="title">{{listing.title}}</h2>
+        <br>
+        <h4>This listing has closed</h4>
+        <br>
+        <strong>{{buyer}}</strong> has won the auction for ${{listing.current_price}}
+    {% else %}
+    <div class="top_div">
+        {% if Watchlist %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if listing in Watchlist.listings.all%}
+            <input type="hidden" name="watchlist" value="0">
+            <input type="submit" style="float:right" value="Remove from Watchlist">
+            {% else %}
+            <input type="hidden" name="watchlist" value="1">
+            <input type="submit" style="float:right" value="Add to Watchlist">
+            {% endif %}
+        </form>
+        {% endif %}
+        <h2 id="title">{{listing.title}}</h2>
+    </div>
+    {% if user.is_authenticated %}
+                {%if user != listing.seller %}
+                    {{message}}
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        Current Price - $<input type="number" name="bid" placeholder="{{listing.current_price}}">
+                        <input type="submit" name="Bid" value="Bid">
+                    </form>
+                {%else%}
+                    Current Price - ${{listing.current_price}}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="close" value="0">
+                        <input type="submit" name="close" value="Close Listing">
+                    </form>
+                {% endif %}
+            {% else %}
+                Current Price - ${{listing.current_price}}
+                {% endif %}
+            {% endif %} 
+        <div class="content">
+        {% if listing.image %}
+            <img src={{listing.image}} class="listing_image">    
+        {% endif %}
+        <br>
+        [Listed by: {{listing.seller}}] 
+        <br>
+        {{listing.description}}
+    </div>
+    <hr>
+    <div class="write_comment">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="comment" placeholder="Write Comment">
+            <input type="submit" value="Submit comment">
+        </form>
+    </div>
+    <br>
+    <h3>Comments</h3>
+    {% for comment in comments %}
+    <div class="comment">
+        <strong><a href="{{comment.user.username}}">{{comment.user.username}}</a></strong> - {{comment.comment}}
+    </div>
+    {% endfor %}
+{% endblock %}

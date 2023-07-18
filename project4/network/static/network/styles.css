@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+  }
+
+body {
+    padding: 10px;
+}
+
+#all_posts{
+    list-style-type: none;
+    padding-inline-start: 10px;
+}
+
+.post{
+    border: 3px solid rgb(167, 167, 167);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.post img{
+    max-width:100%;
+    height:200px;
+}
+
+#image_sec{
+    max-height: fit-content;
+    max-width:50%;
+}
+
+#base_details_sec {
+    max-width: 50%;
+    max-height: fit-content;
+    float: right;
+}

@@ -1,0 +1,21 @@
+{% extends "network/index.html" %}
+
+{% block profile %}
+
+    <div><h1>{{profile.username}}</h1><h3>Following - {{profile.follows.all|length}} | Followers - {{profile.followed_by.all|length}} </h3></div>
+    <p>{{profile.description}}</p>
+    <hr>
+    {% if profile != user and user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {% if profile not in user.follows.all %}
+            <input type="submit" name="follow" value="Follow">
+            {% else %}
+            <input type="submit" name="follow" value="Unfollow">
+            {% endif %}
+        </form>
+    {% endif %}
+    <br>
+
+
+{% endblock %}

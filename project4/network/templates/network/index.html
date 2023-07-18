@@ -1,0 +1,46 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% block profile %}{% endblock %}
+<ul id="all_posts">
+    {% for post in posts %}
+            <div class="post">
+                <li>
+                    {% if user.is_authenticated and user == post.user%}
+                    <a href="/posts/{{post.id}}/edit">EDIT</a>
+                    {%endif%}
+                    <p id="post_id" hidden>{{post.id}}</p>
+                    <h2><a href="{{post.user}}">{%if post.user.first_name or post.user.last_name%}{{post.user.first_name}} {{post.user.last_name}} {%else%} {{post.user.username}} {%endif%}</a></h2><small>{{post.time}}</small>
+                    <div id="content">
+                        <br>
+                        <p>{{post.content}}</p>
+                    </div>
+                    {% if post.images %}
+                    <div class="row">
+                        {%for image in post.images.all %}
+                        <div id="image" class="col-md-4">
+                            <img src={{image.image}}>           
+                        </div>
+                        
+                        {%endfor%}                        
+                    </div>
+                    <br>
+                    {% endif %}
+                    <p><span><button id="like">👍🏻</button></span>      <span id="likes">{{post.likes}}</span>          <span><button id="unlike">👎🏻</button></span></p>
+                </li>
+            </div>
+    {% endfor %}
+</ul>
+
+
+    {%if posts.has_previous %} {# whether the previous page exists #}
+        <a href="?page={{posts.previous_page_number}}"><</a> {# link to the prev page #}
+    {% endif %}
+    <span>{{posts.number}}</span> {# the current page number #}
+    
+    {%if posts.has_next %} {# whether the next page exists #}
+        <a href="?page={{posts.next_page_number}}">></a> {# link to the next page #}
+    {% endif %}
+
+<h6 id="test"></h6>
+{% endblock %}
